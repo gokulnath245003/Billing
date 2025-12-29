@@ -13,6 +13,7 @@ import Dashboard from './pages/Dashboard';
 import SalesHistory from './pages/SalesHistory';
 import CloseShift from './pages/CloseShift';
 import Users from './pages/Users';
+import Settings from './pages/Settings';
 
 function App() {
     return (
@@ -35,6 +36,7 @@ function App() {
                             <Route element={<ProtectedRoute allowedRoles={[ROLES.OWNER]} />}>
                                 <Route path="/dashboard" element={<Dashboard />} />
                                 <Route path="/users" element={<Users />} />
+                                <Route path="/settings" element={<Settings />} />
                             </Route>
                         </Route>
                     </Route>

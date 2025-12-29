@@ -12,7 +12,10 @@ import {
     Menu,
     X,
     History,
-    Users // Added icon
+    X,
+    History,
+    Users,
+    Settings as SettingsIcon // Added icon
 } from 'lucide-react';
 import clsx from 'clsx';
 
@@ -26,6 +29,7 @@ const Layout = () => {
         { name: 'Inventory', href: '/inventory', icon: Package, roles: [ROLES.OWNER, ROLES.WORKER] }, // Worker can view stock? Plan says "Add items" is owner+worker? Or owner only? Plan implies owner+worker for edit form. Let's assume view/edit is shared but delete is guarded.
         { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard, roles: [ROLES.OWNER] },
         { name: 'Staff', href: '/users', icon: Users, roles: [ROLES.OWNER] }, // Added Staff
+        { name: 'Settings', href: '/settings', icon: SettingsIcon, roles: [ROLES.OWNER] },
         { name: 'Sales History', href: '/sales', icon: Receipt, roles: [ROLES.OWNER, ROLES.WORKER] },
     ];
 
