@@ -1,8 +1,19 @@
+
 import React, { useState } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { ROLES } from '../../utils/constants';
-import { Menu, X, Receipt, ShoppingCart, BarChart3, LogOut, Package } from 'lucide-react';
+import {
+    LayoutDashboard,
+    ShoppingCart,
+    Package,
+    Receipt,
+    LogOut,
+    Menu,
+    X,
+    History,
+    Users // Added icon
+} from 'lucide-react';
 import clsx from 'clsx';
 
 const Layout = () => {
@@ -13,8 +24,9 @@ const Layout = () => {
     const navigation = [
         { name: 'Billing', href: '/', icon: Receipt, roles: [ROLES.OWNER, ROLES.WORKER] },
         { name: 'Inventory', href: '/inventory', icon: Package, roles: [ROLES.OWNER, ROLES.WORKER] }, // Worker can view stock? Plan says "Add items" is owner+worker? Or owner only? Plan implies owner+worker for edit form. Let's assume view/edit is shared but delete is guarded.
-        { name: 'Dashboard', href: '/dashboard', icon: BarChart3, roles: [ROLES.OWNER] },
-        { name: 'Sales/History', href: '/sales', icon: ShoppingCart, roles: [ROLES.OWNER, ROLES.WORKER] },
+        { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard, roles: [ROLES.OWNER] },
+        { name: 'Staff', href: '/users', icon: Users, roles: [ROLES.OWNER] }, // Added Staff
+        { name: 'Sales History', href: '/sales', icon: Receipt, roles: [ROLES.OWNER, ROLES.WORKER] },
     ];
 
     const filteredNav = navigation.filter(item => item.roles.includes(user?.role));

@@ -12,6 +12,7 @@ import Inventory from './pages/Inventory';
 import Dashboard from './pages/Dashboard';
 import SalesHistory from './pages/SalesHistory';
 import CloseShift from './pages/CloseShift';
+import Users from './pages/Users';
 
 function App() {
     return (
@@ -33,6 +34,7 @@ function App() {
                             {/* Owner Only Routes */}
                             <Route element={<ProtectedRoute allowedRoles={[ROLES.OWNER]} />}>
                                 <Route path="/dashboard" element={<Dashboard />} />
+                                <Route path="/users" element={<Users />} />
                             </Route>
                         </Route>
                     </Route>
