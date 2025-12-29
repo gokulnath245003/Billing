@@ -12,8 +12,7 @@ import {
     Menu,
     X,
     History,
-    X,
-    History,
+
     Users,
     Settings as SettingsIcon // Added icon
 } from 'lucide-react';
