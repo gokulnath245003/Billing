@@ -119,17 +119,7 @@ const Settings = () => {
                 </div>
             </div>
 
-            {/* Info Section about JWT/Security */}
-            <div className="bg-gray-50 rounded-2xl p-6 border border-gray-200">
-                <h3 className="font-semibold text-gray-800 mb-2">Security Note</h3>
-                <ul className="list-disc list-inside text-sm text-gray-600 space-y-1">
-                    <li>This application runs 100% in your browser (Offline-First).</li>
-                    <li>There is no central server storing your passwords or data.</li>
-                    <li>Your "Login" effectively unlocks the local database.</li>
-                    <li><strong>JWTs (JSON Web Tokens)</strong> inherently require a backend server to sign and verify tokens. Since we don't have a backend (to keep this free and offline), we use a secure local session method instead.</li>
-                    <li>To protect your data, prevent unauthorized physical access to this device.</li>
-                </ul>
-            </div>
+
         </div>
     );
 };

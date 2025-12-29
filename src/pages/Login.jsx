@@ -74,7 +74,7 @@ const Login = () => {
                 </form>
 
                 <div className="mt-4 text-xs text-center text-gray-400">
-                    Default: owner / 1234
+                    {/* Credentials removed as requested */}
                 </div>
             </div>
         </div>
