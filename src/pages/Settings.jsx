@@ -18,6 +18,50 @@ const Settings = () => {
         }
     };
 
+    const [receiptSettings, setReceiptSettings] = useState({
+        storeName: 'MY STORE',
+        address: '',
+        phone: '',
+        footer: 'Thank You!'
+    });
+
+    React.useEffect(() => {
+        loadSettings();
+    }, []);
+
+    const loadSettings = async () => {
+        try {
+            const doc = await import('../services/db').then(m => m.db.settings.get('receipt_config'));
+            setReceiptSettings(doc);
+        } catch (err) {
+            // No settings yet, keep defaults
+        }
+    };
+
+    const saveSettings = async () => {
+        try {
+            setLoading(true);
+            const { db } = await import('../services/db');
+            let doc;
+            try {
+                doc = await db.settings.get('receipt_config');
+            } catch (e) {
+                doc = { _id: 'receipt_config' };
+            }
+
+            await db.settings.put({
+                ...doc,
+                ...receiptSettings,
+                _id: 'receipt_config'
+            });
+            setMessage({ type: 'success', text: 'Receipt settings saved!' });
+        } catch (err) {
+            setMessage({ type: 'error', text: 'Failed to save settings' });
+        } finally {
+            setLoading(false);
+        }
+    };
+
     const handleImport = async (event) => {
         const file = event.target.files[0];
         if (!file) return;
@@ -57,6 +101,60 @@ const Settings = () => {
                     {message.text}
                 </div>
             )}
+
+            {/* Receipt Settings Section */}
+            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                <div className="p-6 border-b border-gray-100 bg-gray-50/50">
+                    <h2 className="text-xl font-bold flex items-center gap-2">
+                        <Download className="text-blue-600" size={24} /> {/* Reusing icon for now or need Printer icon */}
+                        Receipt Customization
+                    </h2>
+                    <p className="text-gray-500 text-sm mt-1">
+                        Customize how your printed receipt looks.
+                    </p>
+                </div>
+                <div className="p-6 grid gap-4">
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Store Name</label>
+                        <input
+                            className="w-full p-2 border rounded-md"
+                            value={receiptSettings.storeName}
+                            onChange={e => setReceiptSettings({ ...receiptSettings, storeName: e.target.value })}
+                        />
+                    </div>
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Address / Subtitle</label>
+                        <input
+                            className="w-full p-2 border rounded-md"
+                            value={receiptSettings.address}
+                            onChange={e => setReceiptSettings({ ...receiptSettings, address: e.target.value })}
+                        />
+                    </div>
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Phone / Header Info</label>
+                        <input
+                            className="w-full p-2 border rounded-md"
+                            value={receiptSettings.phone}
+                            onChange={e => setReceiptSettings({ ...receiptSettings, phone: e.target.value })}
+                        />
+                    </div>
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Footer Message</label>
+                        <input
+                            className="w-full p-2 border rounded-md"
+                            value={receiptSettings.footer}
+                            onChange={e => setReceiptSettings({ ...receiptSettings, footer: e.target.value })}
+                        />
+                    </div>
+                    <button
+                        onClick={saveSettings}
+                        disabled={loading}
+                        className="mt-2 py-2 px-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 w-full md:w-auto"
+                    >
+                        Save Settings
+                    </button>
+                </div>
+            </div>
 
             {/* Data Management Section */}
             <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">

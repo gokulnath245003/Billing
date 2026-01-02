@@ -35,6 +35,22 @@ export const printerService = {
         try {
             console.log('Printing Invoice:', invoice);
 
+            // Fetch Settings
+            let settings = {
+                storeName: 'MY STORE',
+                address: '',
+                phone: '',
+                footer: 'Thank You!'
+            };
+
+            try {
+                const { db } = await import('./db');
+                const doc = await db.settings.get('receipt_config');
+                settings = { ...settings, ...doc };
+            } catch (e) {
+                console.log('Using default print settings');
+            }
+
             // Create a hidden iframe for printing
             const iframe = document.createElement('iframe');
             iframe.style.position = 'absolute';
@@ -46,8 +62,6 @@ export const printerService = {
             const doc = iframe.contentWindow.document;
 
             // Generate Receipt HTML
-            // Note: Thermal printers usually use 58mm or 80mm width.
-            // We use a safe max-width and monospace font.
             doc.open();
             doc.write(`
                 <html>
@@ -62,6 +76,7 @@ export const printerService = {
                             padding: 10px;
                         }
                         .header { text-align: center; margin-bottom: 10px; }
+                        .store-name { font-size: 16px; font-weight: bold; }
                         .divider { border-top: 1px dashed black; margin: 5px 0; }
                         .item-row { display: flex; justify-content: space-between; }
                         .total-row { display: flex; justify-content: space-between; font-weight: bold; margin-top: 5px; }
@@ -70,7 +85,10 @@ export const printerService = {
                 </head>
                 <body>
                     <div class="header">
-                        <h2 style="margin:0;">MY STORE</h2>
+                        <div class="store-name">${settings.storeName}</div>
+                        ${settings.address ? `<div>${settings.address}</div>` : ''}
+                        ${settings.phone ? `<div>${settings.phone}</div>` : ''}
+                        <br/>
                         <div>Bill No: ${invoice.billNo}</div>
                         <div>Date: ${new Date(invoice.createdAt).toLocaleString()}</div>
                     </div>
@@ -97,7 +115,7 @@ export const printerService = {
                     </div>
 
                     <div class="footer">
-                        Thank You!
+                        ${settings.footer}
                     </div>
                 </body>
                 </html>

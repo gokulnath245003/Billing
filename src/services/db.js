@@ -9,6 +9,7 @@ const inventoryDB = new PouchDB(DB_NAMES.INVENTORY);
 const invoicesDB = new PouchDB(DB_NAMES.INVOICES);
 const usersDB = new PouchDB(DB_NAMES.USERS);
 const auditDB = new PouchDB(DB_NAMES.AUDIT);
+const settingsDB = new PouchDB('local_settings');
 
 // Temporary: seed an owner if not exists
 const seedOwner = async () => {
@@ -40,6 +41,7 @@ export const db = {
     invoices: invoicesDB,
     users: usersDB,
     audit: auditDB,
+    settings: settingsDB,
 };
 
 // Generic Sync Function

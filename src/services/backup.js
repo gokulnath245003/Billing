@@ -22,6 +22,7 @@ export const exportData = async () => {
             invoices: await getAllDocs(db.invoices),
             users: await getAllDocs(db.users),
             audit: await getAllDocs(db.audit),
+            settings: await getAllDocs(db.settings),
         };
 
         const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
@@ -95,6 +96,7 @@ export const importData = async (jsonContent) => {
         await restoreDB(db.users, data.users);
         // We usually don't restore audit logs or maybe we do. Let's do it.
         await restoreDB(db.audit, data.audit);
+        if (data.settings) await restoreDB(db.settings, data.settings);
 
         return true;
     } catch (error) {
